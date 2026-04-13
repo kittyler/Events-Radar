@@ -1,1 +1,263 @@
-{}
+{
+  "generated_at": "2026-04-13T18:30:53.888723+00:00",
+  "event_count": 11,
+  "events": [
+    {
+      "id": "EVT-0001",
+      "title": "GIR Live: Annual Investigations Meeting DC",
+      "organiser": "Global Investigations Review",
+      "start": "2026-03-05",
+      "end": "2026-03-05",
+      "city": "Washington DC",
+      "country": "USA",
+      "region": "North America",
+      "format": "In-person",
+      "topics": [
+        "Investigations",
+        "FCPA",
+        "Enforcement"
+      ],
+      "audience": "Senior",
+      "cost": "Paid",
+      "costDisplay": "See site",
+      "url": "https://events.globalinvestigationsreview.com/event/GIRLiveAIMDC2026/websitePage:2e8a6cb7-917e-405c-83ff-8a8b14d1855f",
+      "flags": [],
+      "summary": "Senior investigations practitioners' gathering focused on the latest enforcement landscape in Washington DC. DOJ and SEC speakers confirmed in prior years."
+    },
+    {
+      "id": "EVT-0002",
+      "title": "LCIA at Paris Arbitration Week 2026",
+      "organiser": "LCIA",
+      "start": "2026-03-19",
+      "end": "2026-03-19",
+      "city": "Paris",
+      "country": "France",
+      "region": "Europe",
+      "format": "In-person",
+      "topics": [
+        "Arbitration",
+        "Disputes"
+      ],
+      "audience": "Senior",
+      "cost": "Paid",
+      "costDisplay": "See event",
+      "url": "https://www.lcia.org",
+      "flags": [],
+      "summary": "LCIA's flagship contribution to Paris Arbitration Week. Networking plus technical arbitration content."
+    },
+    {
+      "id": "EVT-0003",
+      "title": "YIAG Fireside Chat (Madrid)",
+      "organiser": "LCIA Young International Arbitration Group",
+      "start": "2026-04-13",
+      "end": "2026-04-13",
+      "city": "Madrid",
+      "country": "Spain",
+      "region": "Europe",
+      "format": "In-person",
+      "topics": [
+        "Arbitration",
+        "Disputes"
+      ],
+      "audience": "Junior",
+      "cost": "Free",
+      "costDisplay": "Members",
+      "url": "https://www.lcia.org",
+      "flags": [],
+      "summary": "Young International Arbitration Group fireside chat. Members-only. Good for junior practitioners building a network."
+    },
+    {
+      "id": "EVT-0004",
+      "title": "ACAMS Eurasia Chapter: Internal Audit in AML",
+      "organiser": "ACAMS",
+      "start": "2026-04-15",
+      "end": "2026-04-15",
+      "city": "Virtual",
+      "country": "",
+      "region": "Global",
+      "format": "Virtual",
+      "topics": [
+        "AML",
+        "Financial Crime"
+      ],
+      "audience": "Mixed",
+      "cost": "Free",
+      "costDisplay": "Free",
+      "url": "https://www.acams.org/en/events/acams-events-view-all-upcoming-events",
+      "flags": [],
+      "summary": "ACAMS Eurasia Chapter webinar. 1 ACAMS credit. 60 minutes. The role of internal audit in AML from compliance check to risk assurance."
+    },
+    {
+      "id": "EVT-0005",
+      "title": "The Assembly Hollywood",
+      "organiser": "ACAMS",
+      "start": "2026-04-20",
+      "end": "2026-04-22",
+      "city": "Hollywood, FL",
+      "country": "USA",
+      "region": "North America",
+      "format": "In-person",
+      "topics": [
+        "AML",
+        "Financial Crime",
+        "Sanctions",
+        "Fraud"
+      ],
+      "audience": "Mixed",
+      "cost": "Paid",
+      "costDisplay": "See site",
+      "url": "https://www.acams.org/en/events/the-assembly/the-assembly-hollywood",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "ACAMS' US flagship AFC conference. Three days. 16 ACAMS credits available."
+    },
+    {
+      "id": "EVT-0008",
+      "title": "The Assembly Europe",
+      "organiser": "ACAMS",
+      "start": "2026-05-12",
+      "end": "2026-05-13",
+      "city": "Frankfurt",
+      "country": "Germany",
+      "region": "Europe",
+      "format": "In-person",
+      "topics": [
+        "AML",
+        "Sanctions",
+        "Financial Crime"
+      ],
+      "audience": "Mixed",
+      "cost": "Paid",
+      "costDisplay": "See site",
+      "url": "https://www.acams.org/en/events/the-assembly/the-assembly-europe",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "ACAMS' European flagship. 13 ACAMS credits. AMLA implementation, EU Single Rulebook."
+    },
+    {
+      "id": "EVT-0012",
+      "title": "London International Disputes Week 2026",
+      "organiser": "LIDW",
+      "start": "2026-06-01",
+      "end": "2026-06-05",
+      "city": "London",
+      "country": "UK",
+      "region": "UK",
+      "format": "In-person",
+      "topics": [
+        "Disputes",
+        "Arbitration",
+        "Litigation"
+      ],
+      "audience": "Mixed",
+      "cost": "Paid",
+      "costDisplay": "Register",
+      "url": "https://register.lidw.co.uk/",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "The biggest week in the London disputes calendar. 10,000+ attendees last year from 100+ countries."
+    },
+    {
+      "id": "EVT-0017",
+      "title": "C5 Global Anti-Corruption London",
+      "organiser": "C5 Group",
+      "start": "2026-06-17",
+      "end": "2026-06-18",
+      "city": "London",
+      "country": "UK",
+      "region": "UK",
+      "format": "In-person",
+      "topics": [
+        "ABC",
+        "Bribery",
+        "FCPA",
+        "Compliance"
+      ],
+      "audience": "Senior",
+      "cost": "Paid",
+      "costDisplay": "\u00a3995 early bird",
+      "url": "https://www.c5-online.com/ac-london/",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "20th anniversary. Longest-running European ABC conference. Heavy law firm presence."
+    },
+    {
+      "id": "EVT-0019",
+      "title": "Cambridge International Symposium on Economic Crime (43rd)",
+      "organiser": "Jesus College, Cambridge (CIDOEC)",
+      "start": "2026-08-23",
+      "end": "2026-08-30",
+      "city": "Cambridge",
+      "country": "UK",
+      "region": "UK",
+      "format": "In-person",
+      "topics": [
+        "Financial Crime",
+        "Fraud",
+        "Asset Recovery",
+        "AML"
+      ],
+      "audience": "Senior",
+      "cost": "Paid",
+      "costDisplay": "Register",
+      "url": "https://www.crimesymposium.org/register",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "The event in the economic crime calendar. 43rd edition. Full week at Jesus College. ~2,000 attendees, 100+ countries."
+    },
+    {
+      "id": "EVT-0021",
+      "title": "RUSI CFS Annual Conference",
+      "organiser": "RUSI Centre for Finance and Security",
+      "start": "2026-09-15",
+      "end": "2026-09-15",
+      "city": "London",
+      "country": "UK",
+      "region": "UK",
+      "format": "In-person",
+      "topics": [
+        "Financial Crime",
+        "Sanctions",
+        "Policy"
+      ],
+      "audience": "Senior",
+      "cost": "Paid",
+      "costDisplay": "See site",
+      "url": "https://www.rusi.org/explore-our-research/research-groups/centre-for-finance-and-security",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "RUSI CFS annual conference at Whitehall HQ. Treasury, NCA, OFSI speakers."
+    },
+    {
+      "id": "EVT-0022",
+      "title": "GIR Live: Global Investigations Summit",
+      "organiser": "Global Investigations Review",
+      "start": "2026-09-17",
+      "end": "2026-09-18",
+      "city": "Barcelona",
+      "country": "Spain",
+      "region": "Europe",
+      "format": "In-person",
+      "topics": [
+        "Investigations",
+        "Enforcement",
+        "FCPA"
+      ],
+      "audience": "Senior",
+      "cost": "Paid",
+      "costDisplay": "\u20ac895 early bird",
+      "url": "https://events.globalinvestigationsreview.com/girglobalinvestigationssummit2026/10594103",
+      "flags": [
+        "Flagship"
+      ],
+      "summary": "Fifth edition. Global investigations community's flagship. In-house, private practice, government."
+    }
+  ],
+  "_note": "Seed data. Will be replaced by scraper on first run."
+}
