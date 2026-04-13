@@ -1,1 +1,46 @@
-# workflow file
+name: Refresh events daily
+
+on:
+  schedule:
+    # 05:00 UTC = 06:00 BST (British Summer Time) / 05:00 GMT (winter)
+    - cron: '0 5 * * *'
+  workflow_dispatch:   # allow manual trigger from the Actions tab
+
+# Give the workflow permission to push the updated events.json back to the repo
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OUTPUT_DIR: public
+        run: python scraper.py
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name  "events-radar-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add public/events.json public/events.csv public/events.db
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
