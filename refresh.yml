@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Events Radar — Disputes, Investigations & Financial Crime</title>
+<style>
+  :root {
+    --bg: #faf9f7;
+    --panel: #ffffff;
+    --ink: #1a1f2e;
+    --ink-soft: #5a6478;
+    --ink-mute: #8a94a8;
+    --line: #e5e2dc;
+    --line-soft: #f0ede6;
+    --accent: #7c3a1d;
+    --accent-soft: #f4ebe3;
+    --teal: #2d5f5d;
+    --teal-soft: #e1ede9;
+    --gold: #a07925;
+    --gold-soft: #f5eedb;
+    --red: #8b2e2e;
+    --red-soft: #f3e3e1;
+    --shadow-sm: 0 1px 2px rgba(26,31,46,0.04);
+    --shadow: 0 1px 2px rgba(26,31,46,0.04), 0 4px 12px rgba(26,31,46,0.04);
+    --shadow-lg: 0 4px 24px rgba(26,31,46,0.12), 0 16px 48px rgba(26,31,46,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ APP SHELL ============ */
+  .app {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    max-width: 1440px;
+    margin: 0 auto;
+    background: var(--panel);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-mark {
+    width: 28px; height: 28px;
+    background: var(--ink);
+    border-radius: 6px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .brand-mark::before, .brand-mark::after {
+    content: "";
+    position: absolute;
+    background: var(--gold);
+  }
+  .brand-mark::before { top: 7px; left: 7px; width: 14px; height: 2px; }
+  .brand-mark::after { top: 7px; left: 7px; width: 2px; height: 14px; }
+  .brand-mark span {
+    position: absolute; top: 13px; left: 13px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--panel);
+    display: block;
+  }
+  .brand-name {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-left: 8px;
+  }
+  .nav-tabs {
+    display: flex;
+    gap: 2px;
+    margin-left: 16px;
+  }
+  .nav-tab {
+    padding: 7px 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: background 0.12s;
+  }
+  .nav-tab:hover { background: var(--line-soft); }
+  .nav-tab.active {
+    background: var(--ink);
+    color: var(--panel);
+  }
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .refresh-indicator {
+    font-size: 11px;
+    color: var(--ink-mute);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .refresh-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .btn {
+    padding: 7px 12px;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .btn:hover { border-color: var(--ink-mute); background: #fcfbf7; }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--panel);
+    border-color: var(--ink);
+  }
+  .btn-primary:hover { background: #2a3141; border-color: #2a3141; }
+
+  /* ============ PAGE HEADER ============ */
+  .page-header {
+    padding: 22px 28px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+  }
+  .page-title {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-bottom: 4px;
+  }
+  .page-sub {
+    color: var(--ink-soft);
+    font-size: 12.5px;
+  }
+  .view-toggle {
+    display: flex;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .view-toggle button {
+    padding: 7px 14px;
+    font-size: 12px;
+    font-family: inherit;
+    background: var(--panel);
+    border: none;
+    border-right: 1px solid var(--line);
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .view-toggle button:last-child { border-right: none; }
+  .view-toggle button.active {
+    background: var(--ink);
+    color: var(--panel);
+  }
+
+  /* ============ KPI STRIP ============ */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-bottom: 1px solid var(--line);
+  }
+  .kpi {
+    padding: 16px 22px;
+    border-right: 1px solid var(--line-soft);
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 5px;
+  }
+
+  /* ============ MAIN LAYOUT ============ */
+  .main {
+    display: grid;
+    grid-template-columns: 240px 1fr 320px;
+    min-height: 640px;
+  }
+
+  /* ============ FILTERS ============ */
+  .filters {
+    border-right: 1px solid var(--line);
+    padding: 20px;
+    background: #fbfaf6;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+  }
+  .filter-group { margin-bottom: 22px; }
+  .filter-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .clear-btn {
+    font-size: 10px;
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    padding: 0;
+  }
+  .clear-btn:hover { text-decoration: underline; }
+  .clear-btn:disabled { color: var(--ink-mute); cursor: default; text-decoration: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip {
+    font-size: 11.5px;
+    padding: 5px 11px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    background: var(--panel);
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.12s;
+    user-select: none;
+    font-family: inherit;
+  }
+  .chip:hover { border-color: var(--ink-mute); color: var(--ink); }
+  .chip.on {
+    background: var(--ink);
+    color: var(--panel);
+    border-color: var(--ink);
+  }
+  .chip-count {
+    margin-left: 4px;
+    color: var(--ink-mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .chip.on .chip-count { color: rgba(255,255,255,0.5); }
+  .search-wrap { position: relative; }
+  .search-box {
+    width: 100%;
+    padding: 8px 12px 8px 30px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font-size: 12.5px;
+    font-family: inherit;
+    background: var(--panel);
+    color: var(--ink);
+  }
+  .search-box:focus { outline: none; border-color: var(--ink); }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--ink-mute);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .search-icon::after {
+    content: ""; position: absolute;
+    right: -5px; bottom: -3px;
+    width: 5px; height: 1.5px;
+    background: var(--ink-mute);
+    transform: rotate(45deg);
+    transform-origin: left;
+  }
+  .date-range { display: flex; gap: 6px; }
+  .date-range input {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-family: inherit;
+    color: var(--ink);
+  }
+
+  /* ============ CONTENT ============ */
+  .content {
+    padding: 20px 26px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .content-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .content-head h2 {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .content-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .result-count {
+    font-size: 11.5px;
+    color: var(--ink-mute);
+  }
+  .sort-select {
+    font-size: 11.5px;
+    padding: 5px 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--panel);
+    font-family: inherit;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  /* List view */
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .event {
+    background: var(--panel);
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 14px;
+    align-items: start;
+    cursor: pointer;
+    transition: background 0.1s;
+    border: none;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    width: 100%;
+  }
+  .event:hover { background: #fcfbf7; }
+  .event-date {
+    font-family: Georgia, serif;
+    text-align: center;
+    padding-top: 2px;
+  }
+  .event-date .month {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .event-date .day {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .event-date .range {
+    font-size: 10px;
+    color: var(--ink-mute);
+    margin-top: 2px;
+  }
+  .event-body { min-width: 0; }
+  .event-body .title {
+    font-weight: 600;
+    font-size: 13.5px;
+    line-height: 1.35;
+    margin-bottom: 3px;
+    color: var(--ink);
+  }
+  .event-body .meta {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .event-body .meta .sep { color: var(--ink-mute); margin: 0 6px; }
+  .event-body .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag {
+    font-size: 10.5px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .tag.topic { background: var(--line-soft); color: var(--ink-soft); }
+  .tag.format-v { background: var(--teal-soft); color: var(--teal); }
+  .tag.format-i { background: var(--accent-soft); color: var(--accent); }
+  .tag.format-h { background: var(--gold-soft); color: var(--gold); }
+  .tag.cost-f { background: var(--teal-soft); color: var(--teal); }
+  .tag.cost-p { background: var(--line-soft); color: var(--ink-soft); }
+  .tag.new { background: var(--red-soft); color: var(--red); }
+  .tag.flag { background: var(--gold-soft); color: var(--gold); font-weight: 600; }
+  .event-side {
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: right;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .event-side .cost-amt { font-weight: 600; color: var(--ink); display: block; font-size: 12px; }
+  .event-side .days-away { margin-top: 3px; color: var(--ink-mute); }
+
+  /* Calendar view */
+  .calendar {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .cal-months { display: flex; flex-direction: column; }
+  .cal-month {
+    border-bottom: 1px solid var(--line);
+  }
+  .cal-month:last-child { border-bottom: none; }
+  .cal-month-header {
+    background: #fbfaf6;
+    padding: 10px 16px;
+    font-family: Georgia, serif;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .cal-month-count { color: var(--ink-mute); font-size: 11px; font-family: Inter, sans-serif; font-weight: 500; }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--line-soft);
+    padding: 0;
+  }
+  .cal-dow {
+    background: var(--panel);
+    padding: 6px 4px;
+    font-size: 10px;
+    text-align: center;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .cal-cell {
+    background: var(--panel);
+    min-height: 68px;
+    padding: 4px 5px;
+    font-size: 10.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: default;
+  }
+  .cal-cell.other { background: #fbfaf6; color: var(--ink-mute); }
+  .cal-cell.today { background: var(--gold-soft); }
+  .cal-cell-num { font-weight: 500; color: var(--ink-soft); }
+  .cal-cell.today .cal-cell-num { color: var(--gold); font-weight: 700; }
+  .cal-event {
+    background: var(--accent);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 9.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    line-height: 1.3;
+  }
+  .cal-event:hover { opacity: 0.88; }
+  .cal-event.virtual { background: var(--teal); }
+  .cal-event.hybrid { background: var(--gold); }
+  .cal-event.flagship { background: var(--ink); font-weight: 600; }
+  .cal-more {
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    padding: 1px 4px;
+  }
+
+  /* ============ SIDE PANEL ============ */
+  .side {
+    border-left: 1px solid var(--line);
+    padding: 20px;
+    background: #fbfaf6;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+  }
+  .side-section { margin-bottom: 24px; }
+  .side-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .bar-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 3px 0;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .bar-item:hover { background: var(--line-soft); padding-left: 6px; padding-right: 6px; }
+  .bar-item .name {
+    font-size: 11.5px;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-item .count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .bar-item .bar {
+    grid-column: 1 / -1;
+    height: 4px;
+    background: var(--line);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 3px;
+  }
+  .bar-item .fill {
+    height: 100%;
+    background: var(--ink);
+    border-radius: 100px;
+    transition: width 0.3s;
+  }
+  .digest-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 4px;
+    font-size: 11.5px;
+  }
+  .digest-card .ttl { font-weight: 600; font-size: 12.5px; margin-bottom: 8px; }
+  .digest-card .date { color: var(--ink-mute); font-size: 10.5px; margin-bottom: 10px; }
+  .digest-item {
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+    border-top: 1px dotted var(--line);
+    align-items: baseline;
+  }
+  .digest-item:first-of-type { border-top: none; padding-top: 2px; }
+  .digest-n {
+    font-family: Georgia, serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    min-width: 24px;
+  }
+  .digest-label { color: var(--ink-soft); font-size: 11.5px; line-height: 1.4; }
+
+  /* ============ MODAL ============ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(26,31,46,0.5);
+    display: none;
+    z-index: 100;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; justify-content: center; align-items: flex-start; }
+  .modal {
+    background: var(--panel);
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 22px 26px 18px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 28px; height: 28px;
+    border: none;
+    background: var(--line-soft);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close:hover { background: var(--line); }
+  .modal-organiser {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .modal-title {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.25;
+    padding-right: 40px;
+    margin-bottom: 12px;
+  }
+  .modal-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .modal-body {
+    padding: 20px 26px;
+  }
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 10px 16px;
+    font-size: 12.5px;
+  }
+  .modal-grid dt {
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+  .modal-grid dd {
+    color: var(--ink);
+  }
+  .modal-grid dd a { color: var(--accent); text-decoration: none; word-break: break-all; }
+  .modal-grid dd a:hover { text-decoration: underline; }
+  .modal-foot {
+    padding: 16px 26px;
+    background: #fbfaf6;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .modal-meta {
+    font-size: 11px;
+    color: var(--ink-mute);
+  }
+  .modal-actions { display: flex; gap: 8px; }
+
+  /* ============ EMPTY / TOAST ============ */
+  .empty {
+    background: var(--panel);
+    padding: 48px 20px;
+    text-align: center;
+    color: var(--ink-mute);
+    font-size: 13px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .empty strong { color: var(--ink); display: block; margin-bottom: 4px; font-size: 14px; }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--panel);
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 200;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-mute); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1200px) {
+    .main { grid-template-columns: 220px 1fr; }
+    .side { display: none; }
+    .kpi-row { grid-template-columns: repeat(4, 1fr); }
+    .kpi:nth-child(5) { display: none; }
+  }
+  @media (max-width: 860px) {
+    .main { grid-template-columns: 1fr; }
+    .filters { display: none; }
+    .filters.open { display: block; position: fixed; inset: 0; z-index: 50; background: var(--panel); max-height: none; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .kpi:nth-child(4), .kpi:nth-child(5) { display: none; }
+    .topbar { padding: 12px 16px; flex-wrap: wrap; }
+    .page-header, .content { padding-left: 16px; padding-right: 16px; }
+    .nav-tabs .nav-tab:not(.active) { display: none; }
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    padding: 14px 28px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-mute);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .footer a {
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .footer a:hover { color: var(--accent); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ========== TOP BAR ========== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"><span></span></div>
+      <div>
+        <div class="brand-name">Events Radar</div>
+      </div>
+      <div class="brand-sub">Disputes · Investigations · Financial Crime</div>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-page="events">Events</button>
+      <button class="nav-tab" data-page="calendar">Calendar</button>
+      <button class="nav-tab" data-page="sources">Sources</button>
+      <button class="nav-tab" data-page="about">About</button>
+    </nav>
+    <div class="topbar-right">
+      <div class="refresh-indicator">
+        <span class="refresh-dot"></span>
+        <span id="refresh-time">Loading…</span>
+      </div>
+      <button class="btn" id="export-btn">Export CSV</button>
+      <button class="btn btn-primary" id="subscribe-btn">Get digest</button>
+    </div>
+  </header>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title" id="page-title">Upcoming events</h1>
+      <div class="page-sub" id="page-sub">Real events from 12 sources. Click any event to view full details.</div>
+    </div>
+    <div class="view-toggle" id="view-toggle">
+      <button class="active" data-view="list">List</button>
+      <button data-view="calendar">Calendar</button>
+    </div>
+  </div>
+
+  <!-- ========== KPI ROW ========== -->
+  <div class="kpi-row" id="kpi-row"></div>
+
+  <!-- ========== MAIN ========== -->
+  <div class="main">
+
+    <!-- FILTERS -->
+    <aside class="filters" id="filters">
+      <div class="filter-group">
+        <div class="filter-label">Search</div>
+        <div class="search-wrap">
+          <span class="search-icon"></span>
+          <input class="search-box" id="search" type="text" placeholder="Title, organiser, city...">
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">
+          <span>Format</span>
+          <button class="clear-btn" data-clear="format">clear</button>
+        </div>
+        <div class="chips" data-group="format" id="chips-format"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">
+          <span>Topic</span>
+          <button class="clear-btn" data-clear="topic">clear</button>
+        </div>
+        <div class="chips" data-group="topic" id="chips-topic"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">
+          <span>Region</span>
+          <button class="clear-btn" data-clear="region">clear</button>
+        </div>
+        <div class="chips" data-group="region" id="chips-region"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">
+          <span>Cost</span>
+          <button class="clear-btn" data-clear="cost">clear</button>
+        </div>
+        <div class="chips" data-group="cost" id="chips-cost"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">
+          <span>Date range</span>
+          <button class="clear-btn" data-clear="dates">clear</button>
+        </div>
+        <div class="date-range">
+          <input type="date" id="date-from" aria-label="From date">
+          <input type="date" id="date-to" aria-label="To date">
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="content-head">
+        <h2 id="content-title">Upcoming events</h2>
+        <div class="content-actions">
+          <span class="result-count" id="result-count">—</span>
+          <select class="sort-select" id="sort">
+            <option value="date">Sort: Date (earliest)</option>
+            <option value="date-desc">Sort: Date (latest)</option>
+            <option value="cost">Sort: Cost (free first)</option>
+            <option value="org">Sort: Organiser</option>
+            <option value="region">Sort: Region</option>
+          </select>
+        </div>
+      </div>
+      <div id="view-container"></div>
+    </main>
+
+    <!-- SIDE PANEL -->
+    <aside class="side">
+      <div class="side-section">
+        <div class="side-label">Monday digest</div>
+        <div class="digest-card">
+          <div class="ttl">This week's briefing</div>
+          <div class="date" id="digest-date">—</div>
+          <div id="digest-list"></div>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Top topics · next 90 days</div>
+        <div id="topics-chart"></div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Most active organisers</div>
+        <div id="orgs-chart"></div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>
+      <span id="footer-count">—</span> events · 12 sources · Updated daily at 06:00 UK
+    </div>
+    <div>
+      <a href="#" id="submit-event">Submit an event</a> ·
+      <a href="#" id="report-issue">Report an issue</a> ·
+      <a href="#" id="view-api">API</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ========== MODAL ========== -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+      <div class="modal-organiser" id="m-org"></div>
+      <h2 class="modal-title" id="m-title"></h2>
+      <div class="modal-tags" id="m-tags"></div>
+    </div>
+    <div class="modal-body">
+      <dl class="modal-grid" id="m-grid"></dl>
+    </div>
+    <div class="modal-foot">
+      <div class="modal-meta" id="m-meta"></div>
+      <div class="modal-actions">
+        <button class="btn" id="m-ics">Add to calendar</button>
+        <a class="btn btn-primary" id="m-register" target="_blank" rel="noopener">Register ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   EVENTS DATA — real events, real URLs, verified on source sites
+   ============================================================ */
+let EVENTS = []; // populated from events.json at runtime
+
+const SOURCES = [
+  { name: "Global Investigations Review", url: "https://globalinvestigationsreview.com/events", method: "Scrape", schedule: "Daily 06:00" },
+  { name: "ACAMS", url: "https://www.acams.org/en/events", method: "Scrape + RSS", schedule: "Daily 06:00" },
+  { name: "LCIA", url: "https://www.lcia.org", method: "Scrape", schedule: "Daily 06:00" },
+  { name: "LIDW", url: "https://register.lidw.co.uk/", method: "Scrape", schedule: "Daily 06:00" },
+  { name: "C5 Group / Informa", url: "https://www.c5-online.com", method: "Scrape", schedule: "Daily 06:00" },
+  { name: "American Conference Institute", url: "https://www.americanconference.com", method: "Scrape", schedule: "Daily 06:00" },
+  { name: "Jesus College Cambridge (CIDOEC)", url: "https://www.crimesymposium.org", method: "Scrape", schedule: "Weekly" },
+  { name: "RUSI Centre for Finance & Security", url: "https://www.rusi.org", method: "Scrape + RSS", schedule: "Daily 06:00" },
+  { name: "International Chamber of Commerce", url: "https://iccwbo.org", method: "Scrape", schedule: "Weekly" },
+  { name: "IAC London Arbitration Calendar", url: "https://www.iac-london.com/arbitral-events-2026/", method: "Scrape", schedule: "Weekly" },
+  { name: "Herbert Smith Freehills", url: "https://www.hsfkramer.com/events", method: "RSS", schedule: "Daily 06:00" },
+  { name: "Gibson Dunn Webcasts", url: "https://www.gibsondunn.com/events/", method: "Scrape", schedule: "Daily 06:00" }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const TODAY = new Date(new Date().toISOString().slice(0,10) + "T00:00:00");
+const state = {
+  page: "events",
+  view: "list",
+  format: new Set(),
+  topic: new Set(),
+  region: new Set(),
+  cost: new Set(),
+  search: "",
+  dateFrom: "",
+  dateTo: "",
+  sort: "date"
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+function parseDate(iso) { return new Date(iso + "T00:00:00"); }
+function fmtDate(iso) {
+  const d = parseDate(iso);
+  return {
+    month: d.toLocaleString("en-GB", { month: "short" }),
+    day: d.getDate(),
+    weekday: d.toLocaleString("en-GB", { weekday: "short" }),
+    full: d.toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+  };
+}
+function daysFromToday(iso) {
+  const d = parseDate(iso);
+  return Math.round((d - TODAY) / 86400000);
+}
+function daysAwayLabel(n) {
+  if (n < 0) return `${-n}d ago`;
+  if (n === 0) return "Today";
+  if (n === 1) return "Tomorrow";
+  if (n < 7) return `In ${n}d`;
+  if (n < 30) return `In ${Math.round(n/7)}w`;
+  return `In ${Math.round(n/30)}mo`;
+}
+function toast(msg) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+/* ============================================================
+   FILTER LOGIC
+   ============================================================ */
+function applyFilters(list) {
+  let out = list.filter(e => parseDate(e.end) >= TODAY); // default: only upcoming
+
+  if (state.format.size) out = out.filter(e => state.format.has(e.format));
+  if (state.region.size) out = out.filter(e => state.region.has(e.region));
+  if (state.cost.size)   out = out.filter(e => state.cost.has(e.cost));
+  if (state.topic.size)  out = out.filter(e => e.topics.some(t => state.topic.has(t)));
+
+  if (state.dateFrom) out = out.filter(e => e.end >= state.dateFrom);
+  if (state.dateTo)   out = out.filter(e => e.start <= state.dateTo);
+
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    out = out.filter(e =>
+      e.title.toLowerCase().includes(q) ||
+      e.organiser.toLowerCase().includes(q) ||
+      e.city.toLowerCase().includes(q) ||
+      (e.country || "").toLowerCase().includes(q) ||
+      e.topics.join(" ").toLowerCase().includes(q)
+    );
+  }
+
+  // Sort
+  if (state.sort === "date")      out.sort((a,b) => a.start.localeCompare(b.start));
+  else if (state.sort === "date-desc") out.sort((a,b) => b.start.localeCompare(a.start));
+  else if (state.sort === "cost") out.sort((a,b) => (a.cost === "Free" ? 0 : 1) - (b.cost === "Free" ? 0 : 1) || a.start.localeCompare(b.start));
+  else if (state.sort === "org")  out.sort((a,b) => a.organiser.localeCompare(b.organiser));
+  else if (state.sort === "region") out.sort((a,b) => a.region.localeCompare(b.region) || a.start.localeCompare(b.start));
+
+  return out;
+}
+
+/* ============================================================
+   RENDER: KPIs
+   ============================================================ */
+function renderKPIs() {
+  const upcoming = EVENTS.filter(e => parseDate(e.end) >= TODAY);
+  const in30 = new Date(TODAY); in30.setDate(TODAY.getDate() + 30);
+  const next30 = upcoming.filter(e => parseDate(e.start) <= in30);
+  const virtual = upcoming.filter(e => e.format === "Virtual").length;
+  const inPerson30 = next30.filter(e => e.format === "In-person").length;
+  const ukEvents = upcoming.filter(e => e.region === "UK" && e.format === "In-person").length;
+  const flagship = upcoming.filter(e => e.flags.includes("Flagship")).length;
+  const free = upcoming.filter(e => e.cost === "Free").length;
+
+  $("#kpi-row").innerHTML = `
+    <div class="kpi"><div class="kpi-label">Upcoming events</div><div class="kpi-value">${upcoming.length}</div><div class="kpi-sub">Across 12 sources</div></div>
+    <div class="kpi"><div class="kpi-label">Next 30 days</div><div class="kpi-value">${next30.length}</div><div class="kpi-sub">${inPerson30} in-person · ${next30.length - inPerson30} other</div></div>
+    <div class="kpi"><div class="kpi-label">Flagship events</div><div class="kpi-value">${flagship}</div><div class="kpi-sub">Marquee dates</div></div>
+    <div class="kpi"><div class="kpi-label">Free events</div><div class="kpi-value">${free}</div><div class="kpi-sub">No ticket cost</div></div>
+    <div class="kpi"><div class="kpi-label">UK in-person</div><div class="kpi-value">${ukEvents}</div><div class="kpi-sub">London &amp; Cambridge</div></div>
+  `;
+  $("#footer-count").textContent = EVENTS.length;
+}
+
+/* ============================================================
+   RENDER: FILTER CHIPS (with counts)
+   ============================================================ */
+function renderChips() {
+  const upcoming = EVENTS.filter(e => parseDate(e.end) >= TODAY);
+
+  const groups = {
+    format: [...new Set(upcoming.map(e => e.format))].sort(),
+    region: [...new Set(upcoming.map(e => e.region))].sort(),
+    cost: [...new Set(upcoming.map(e => e.cost))].sort(),
+    topic: [...new Set(upcoming.flatMap(e => e.topics))].sort()
+  };
+
+  for (const [group, values] of Object.entries(groups)) {
+    const container = $("#chips-" + group);
+    const selected = state[group];
+    container.innerHTML = values.map(v => {
+      let count;
+      if (group === "topic") count = upcoming.filter(e => e.topics.includes(v)).length;
+      else count = upcoming.filter(e => e[group] === v).length;
+      const on = selected.has(v) ? " on" : "";
+      return `<button class="chip${on}" data-val="${v}">${v}<span class="chip-count">${count}</span></button>`;
+    }).join("");
+  }
+
+  // Enable/disable clear buttons
+  $$("[data-clear]").forEach(btn => {
+    const g = btn.dataset.clear;
+    let has;
+    if (g === "dates") has = state.dateFrom || state.dateTo;
+    else has = state[g] && state[g].size > 0;
+    btn.disabled = !has;
+  });
+}
+
+/* ============================================================
+   RENDER: EVENT LIST
+   ============================================================ */
+function renderList(list) {
+  const container = $("#view-container");
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        <strong>No events match these filters</strong>
+        Try clearing a filter or searching a different term.
+      </div>`;
+    return;
+  }
+
+  const html = `<div class="event-list">` + list.map(e => {
+    const d = fmtDate(e.start);
+    const multi = e.start !== e.end;
+    const endD = multi ? fmtDate(e.end) : null;
+    const rangeStr = multi
+      ? (e.start.slice(0,7) === e.end.slice(0,7) ? `→ ${endD.day}` : `→ ${endD.month} ${endD.day}`)
+      : d.weekday;
+    const formatCls = e.format === "Virtual" ? "format-v" : e.format === "In-person" ? "format-i" : "format-h";
+    const costCls = e.cost === "Free" ? "cost-f" : "cost-p";
+    const daysAway = daysFromToday(e.start);
+
+    const tags = [
+      `<span class="tag ${formatCls}">${e.format}</span>`,
+      `<span class="tag ${costCls}">${e.cost}</span>`,
+      ...e.topics.slice(0, 3).map(t => `<span class="tag topic">${t}</span>`),
+      ...e.flags.map(f => `<span class="tag flag">${f}</span>`)
+    ].join("");
+
+    return `<button class="event" data-id="${e.id}">
+      <div class="event-date">
+        <div class="month">${d.month}</div>
+        <div class="day">${d.day}</div>
+        <div class="range">${rangeStr}</div>
+      </div>
+      <div class="event-body">
+        <div class="title">${e.title}</div>
+        <div class="meta">${e.organiser}<span class="sep">·</span>${e.city}${e.country ? ', ' + e.country : ''}</div>
+        <div class="tags">${tags}</div>
+      </div>
+      <div class="event-side">
+        <span class="cost-amt">${e.costDisplay}</span>
+        <span class="days-away">${daysAwayLabel(daysAway)}</span>
+      </div>
+    </button>`;
+  }).join("") + `</div>`;
+
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   RENDER: CALENDAR
+   ============================================================ */
+function renderCalendar(list) {
+  const container = $("#view-container");
+  if (list.length === 0) {
+    container.innerHTML = `<div class="empty"><strong>No events to show</strong>Try clearing filters.</div>`;
+    return;
+  }
+
+  // Group by month
+  const byMonth = {};
+  list.forEach(e => {
+    // An event spans from start to end; add it to every month it touches
+    let cur = parseDate(e.start);
+    const end = parseDate(e.end);
+    while (cur <= end) {
+      const key = `${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`;
+      (byMonth[key] = byMonth[key] || []).push({ ev: e, date: cur.toISOString().slice(0,10) });
+      cur.setDate(cur.getDate() + 1);
+    }
+  });
+
+  const monthKeys = Object.keys(byMonth).sort();
+  const dowLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const todayStr = TODAY.toISOString().slice(0,10);
+
+  const months = monthKeys.map(key => {
+    const [y, m] = key.split("-").map(Number);
+    const monthStart = new Date(y, m-1, 1);
+    const monthName = monthStart.toLocaleString("en-GB", { month: "long", year: "numeric" });
+    // Get first Monday on or before the 1st
+    const firstDayDow = (monthStart.getDay() + 6) % 7; // 0 = Monday
+    const gridStart = new Date(monthStart);
+    gridStart.setDate(1 - firstDayDow);
+
+    // Count unique events in this month
+    const uniqueIds = new Set(byMonth[key].map(x => x.ev.id));
+
+    // Build cells
+    const cells = [];
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(gridStart);
+      d.setDate(gridStart.getDate() + i);
+      const iso = d.toISOString().slice(0,10);
+      const inMonth = d.getMonth() === m-1;
+      const isToday = iso === todayStr;
+      const dayEvents = byMonth[key].filter(x => x.date === iso).map(x => x.ev);
+      // Dedupe (an event covering multi days could be listed once per day in byMonth)
+      const seen = new Set();
+      const unique = dayEvents.filter(e => seen.has(e.id) ? false : seen.add(e.id));
+
+      const shown = unique.slice(0, 2);
+      const more = unique.length - shown.length;
+
+      cells.push(`<div class="cal-cell${inMonth ? "" : " other"}${isToday ? " today" : ""}">
+        <div class="cal-cell-num">${d.getDate()}</div>
+        ${shown.map(e => {
+          const cls = e.flags.includes("Flagship") ? "flagship"
+                    : e.format === "Virtual" ? "virtual"
+                    : e.format === "Hybrid" ? "hybrid" : "";
+          return `<div class="cal-event ${cls}" data-id="${e.id}" title="${e.title}">${e.title}</div>`;
+        }).join("")}
+        ${more > 0 ? `<div class="cal-more">+ ${more} more</div>` : ""}
+      </div>`);
+      if (!inMonth && d > new Date(y, m, 0) && i % 7 === 6) break; // stop early if past month
+    }
+
+    return `<div class="cal-month">
+      <div class="cal-month-header">
+        <span>${monthName}</span>
+        <span class="cal-month-count">${uniqueIds.size} event${uniqueIds.size === 1 ? '' : 's'}</span>
+      </div>
+      <div class="cal-grid">
+        ${dowLabels.map(l => `<div class="cal-dow">${l}</div>`).join("")}
+        ${cells.join("")}
+      </div>
+    </div>`;
+  }).join("");
+
+  container.innerHTML = `<div class="calendar"><div class="cal-months">${months}</div></div>`;
+}
+
+/* ============================================================
+   RENDER: SIDE PANEL
+   ============================================================ */
+function renderSide() {
+  const upcoming = EVENTS.filter(e => parseDate(e.end) >= TODAY);
+  const in90 = new Date(TODAY); in90.setDate(TODAY.getDate() + 90);
+  const next90 = upcoming.filter(e => parseDate(e.start) <= in90);
+
+  // Digest
+  const weekEnd = new Date(TODAY); weekEnd.setDate(TODAY.getDate() + 7);
+  const in30 = new Date(TODAY); in30.setDate(TODAY.getDate() + 30);
+  const thisWeek = upcoming.filter(e => parseDate(e.start) <= weekEnd);
+  const next30 = upcoming.filter(e => parseDate(e.start) <= in30);
+  const free30 = next30.filter(e => e.cost === "Free").length;
+  const flag30 = next30.filter(e => e.flags.includes("Flagship")).length;
+
+  $("#digest-date").textContent = "Monday, 13 April 2026";
+  $("#digest-list").innerHTML = `
+    <div class="digest-item"><div class="digest-n">${thisWeek.length}</div><div class="digest-label">events this week</div></div>
+    <div class="digest-item"><div class="digest-n">${next30.length}</div><div class="digest-label">events in next 30 days</div></div>
+    <div class="digest-item"><div class="digest-n">${free30}</div><div class="digest-label">free events next 30 days</div></div>
+    <div class="digest-item"><div class="digest-n">${flag30}</div><div class="digest-label">flagship events ahead</div></div>
+  `;
+
+  // Topics
+  const topicCounts = {};
+  next90.forEach(e => e.topics.forEach(t => { topicCounts[t] = (topicCounts[t] || 0) + 1; }));
+  const topTopics = Object.entries(topicCounts).sort((a,b) => b[1]-a[1]).slice(0,7);
+  const maxTop = topTopics[0] ? topTopics[0][1] : 1;
+  $("#topics-chart").innerHTML = topTopics.map(([n, c]) => `
+    <div class="bar-item" data-topic="${n}">
+      <span class="name">${n}</span>
+      <span class="count">${c}</span>
+      <div class="bar"><div class="fill" style="width: ${(c/maxTop*100).toFixed(0)}%;"></div></div>
+    </div>`).join("");
+
+  // Orgs
+  const orgCounts = {};
+  upcoming.forEach(e => { orgCounts[e.organiser] = (orgCounts[e.organiser] || 0) + 1; });
+  const top = Object.entries(orgCounts).sort((a,b) => b[1]-a[1]).slice(0,6);
+  const short = s => s.replace("Global Investigations Review","GIR")
+    .replace("American Conference Institute","ACI")
+    .replace("International Chamber of Commerce","ICC")
+    .replace("LCIA Young International Arbitration Group","LCIA YIAG")
+    .replace("RUSI Centre for Finance and Security","RUSI CFS")
+    .replace("Jesus College, Cambridge (CIDOEC)","Cambridge CIDOEC");
+  const maxOrg = top[0] ? top[0][1] : 1;
+  $("#orgs-chart").innerHTML = top.map(([n, c]) => `
+    <div class="bar-item">
+      <span class="name" title="${n}">${short(n)}</span>
+      <span class="count">${c}</span>
+      <div class="bar"><div class="fill" style="width: ${(c/maxOrg*100).toFixed(0)}%;"></div></div>
+    </div>`).join("");
+}
+
+/* ============================================================
+   RENDER: SOURCES PAGE
+   ============================================================ */
+function renderSources() {
+  const rows = SOURCES.map(s => `
+    <tr style="border-top: 1px solid var(--line-soft);">
+      <td style="padding: 10px 14px; font-weight: 500;">${s.name}</td>
+      <td style="padding: 10px 14px;"><a href="${s.url}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">${s.url}</a></td>
+      <td style="padding: 10px 14px; color: var(--ink-soft);">${s.method}</td>
+      <td style="padding: 10px 14px; color: var(--ink-soft);">${s.schedule}</td>
+    </tr>`).join("");
+
+  $("#view-container").innerHTML = `
+    <div style="border: 1px solid var(--line); border-radius: 6px; overflow: hidden;">
+      <table style="width: 100%; border-collapse: collapse; background: var(--panel); font-size: 12.5px;">
+        <thead>
+          <tr style="background: #fbfaf6;">
+            <th style="padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute);">Source</th>
+            <th style="padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute);">URL</th>
+            <th style="padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute);">Method</th>
+            <th style="padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute);">Schedule</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <p style="margin-top: 16px; font-size: 12px; color: var(--ink-soft);">
+      Each source is fetched on the listed schedule. Pages are passed through an LLM extractor that produces structured event records against a fixed schema. Events are deduplicated by title + date + city, then written to the database that powers this dashboard.
+    </p>`;
+}
+
+/* ============================================================
+   RENDER: ABOUT PAGE
+   ============================================================ */
+function renderAbout() {
+  $("#view-container").innerHTML = `
+    <div style="max-width: 680px; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft);">
+      <h3 style="font-family: Georgia, serif; font-size: 18px; color: var(--ink); margin-bottom: 12px;">About Events Radar</h3>
+      <p style="margin-bottom: 16px;">Events Radar aggregates networking events, conferences, and webinars relevant to practitioners working on disputes, investigations, and financial crime. Every event listed here comes from its organiser's own website. Every registration link is live.</p>
+
+      <h4 style="font-family: Georgia, serif; font-size: 14px; color: var(--ink); margin: 20px 0 8px;">How it works</h4>
+      <p style="margin-bottom: 12px;">A scheduled job fetches each configured source page once a day. Page HTML is passed to an LLM that extracts structured event records: title, organiser, dates, location, format, topics, cost, registration URL. Records are deduplicated and written to a database. This dashboard reads from that database.</p>
+
+      <h4 style="font-family: Georgia, serif; font-size: 14px; color: var(--ink); margin: 20px 0 8px;">Coverage</h4>
+      <p style="margin-bottom: 12px;">Currently 12 sources spanning commercial conference organisers (GIR, ACAMS, C5, ACI), regulators (RUSI), academic institutions (Cambridge CIDOEC), professional bodies (LCIA, ICC), and law firm events (HSF, Gibson Dunn). New sources can be added by editing the configuration — the LLM handles page parsing without bespoke code per source.</p>
+
+      <h4 style="font-family: Georgia, serif; font-size: 14px; color: var(--ink); margin: 20px 0 8px;">Data quality</h4>
+      <p style="margin-bottom: 12px;">The extractor returns a confidence score for each event. Records below 0.5 are flagged for manual review. Events past their end date are hidden from default views. Every registration URL is retained as source-of-truth — if the data shown here is wrong, the organiser's page is authoritative.</p>
+    </div>`;
+}
+
+/* ============================================================
+   RENDER: MAIN
+   ============================================================ */
+function render() {
+  renderKPIs();
+  renderChips();
+  renderSide();
+
+  // Hide/show side panel depending on page
+  const side = document.querySelector(".side");
+  const filters = document.querySelector(".filters");
+  const viewToggle = $("#view-toggle");
+
+  if (state.page === "events" || state.page === "calendar") {
+    const list = applyFilters(EVENTS);
+    $("#result-count").textContent = `Showing ${list.length} of ${EVENTS.filter(e => parseDate(e.end) >= TODAY).length}`;
+    filters.style.display = "";
+    side.style.display = "";
+    viewToggle.style.display = "";
+
+    if (state.view === "calendar" || state.page === "calendar") {
+      $("#content-title").textContent = "Calendar view";
+      $("#page-title").textContent = "Calendar";
+      $("#page-sub").textContent = "All upcoming events plotted by date.";
+      renderCalendar(list);
+    } else {
+      $("#content-title").textContent = "Upcoming events";
+      $("#page-title").textContent = "Upcoming events";
+      $("#page-sub").textContent = "Real events from 12 sources. Click any event to view full details.";
+      renderList(list);
+    }
+  } else if (state.page === "sources") {
+    filters.style.display = "none";
+    side.style.display = "none";
+    viewToggle.style.display = "none";
+    $("#content-title").textContent = "Data sources";
+    $("#page-title").textContent = "Data sources";
+    $("#page-sub").textContent = "Where the data comes from and how often it refreshes.";
+    renderSources();
+  } else if (state.page === "about") {
+    filters.style.display = "none";
+    side.style.display = "none";
+    viewToggle.style.display = "none";
+    $("#content-title").textContent = "About";
+    $("#page-title").textContent = "About";
+    $("#page-sub").textContent = "What this is and how it works.";
+    renderAbout();
+  }
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function openModal(id) {
+  const e = EVENTS.find(x => x.id === id);
+  if (!e) return;
+  const d = fmtDate(e.start);
+  const endD = fmtDate(e.end);
+  const dateStr = e.start === e.end ? d.full : `${d.full} — ${endD.full}`;
+  const daysAway = daysFromToday(e.start);
+
+  $("#m-org").textContent = e.organiser;
+  $("#m-title").textContent = e.title;
+
+  const formatCls = e.format === "Virtual" ? "format-v" : e.format === "In-person" ? "format-i" : "format-h";
+  const costCls = e.cost === "Free" ? "cost-f" : "cost-p";
+  $("#m-tags").innerHTML = [
+    `<span class="tag ${formatCls}">${e.format}</span>`,
+    `<span class="tag ${costCls}">${e.cost}</span>`,
+    ...e.topics.map(t => `<span class="tag topic">${t}</span>`),
+    ...e.flags.map(f => `<span class="tag flag">${f}</span>`)
+  ].join("");
+
+  $("#m-grid").innerHTML = `
+    <dt>When</dt><dd>${dateStr} <span style="color: var(--ink-mute);">· ${daysAwayLabel(daysAway)}</span></dd>
+    <dt>Where</dt><dd>${e.city}${e.country ? ", " + e.country : ""}</dd>
+    <dt>Format</dt><dd>${e.format}</dd>
+    <dt>Audience</dt><dd>${e.audience || "—"}</dd>
+    <dt>Cost</dt><dd>${e.costDisplay}</dd>
+    <dt>Topics</dt><dd>${e.topics.join(", ")}</dd>
+    <dt>Summary</dt><dd style="line-height: 1.5;">${e.summary}</dd>
+    <dt>Source</dt><dd><a href="${e.url}" target="_blank" rel="noopener">${e.url}</a></dd>
+  `;
+
+  $("#m-meta").textContent = `ID: ${e.id}`;
+  $("#m-register").href = e.url;
+  $("#m-ics").onclick = () => downloadICS(e);
+
+  $("#modal").classList.add("open");
+}
+function closeModal() { $("#modal").classList.remove("open"); }
+
+/* ============================================================
+   ICS CALENDAR EXPORT
+   ============================================================ */
+function downloadICS(e) {
+  const dt = (iso) => iso.replace(/-/g, "");
+  const end = parseDate(e.end);
+  end.setDate(end.getDate() + 1); // ICS DTEND is exclusive
+  const endIso = end.toISOString().slice(0,10);
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Events Radar//EN",
+    "BEGIN:VEVENT",
+    `UID:${e.id}@events-radar`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,"").slice(0,15)}Z`,
+    `DTSTART;VALUE=DATE:${dt(e.start)}`,
+    `DTEND;VALUE=DATE:${dt(endIso)}`,
+    `SUMMARY:${e.title}`,
+    `LOCATION:${e.city}${e.country ? ", " + e.country : ""}`,
+    `DESCRIPTION:${e.summary}\\n\\nOrganiser: ${e.organiser}\\nRegister: ${e.url}`,
+    `URL:${e.url}`,
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].join("\r\n");
+  const blob = new Blob([ics], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${e.id}.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Calendar file downloaded");
+}
+
+/* ============================================================
+   CSV EXPORT
+   ============================================================ */
+function exportCSV() {
+  const list = applyFilters(EVENTS);
+  const cols = ["id","title","organiser","start","end","city","country","region","format","cost","costDisplay","audience","topics","flags","url"];
+  const rows = [cols.join(",")];
+  list.forEach(e => {
+    rows.push(cols.map(c => {
+      let v = e[c];
+      if (Array.isArray(v)) v = v.join("; ");
+      v = String(v || "").replace(/"/g, '""');
+      if (v.includes(",") || v.includes('"') || v.includes("\n")) v = `"${v}"`;
+      return v;
+    }).join(","));
+  });
+  const blob = new Blob([rows.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `events-radar-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`Exported ${list.length} events`);
+}
+
+/* ============================================================
+   EVENT HANDLERS
+   ============================================================ */
+// Top nav
+$$(".nav-tab").forEach(tab => tab.addEventListener("click", () => {
+  $$(".nav-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  state.page = tab.dataset.page;
+  if (state.page === "calendar") state.view = "calendar";
+  else if (state.page === "events") state.view = "list";
+  // Sync view-toggle
+  $$("#view-toggle button").forEach(b => b.classList.toggle("active", b.dataset.view === state.view));
+  render();
+}));
+
+// View toggle
+$("#view-toggle").addEventListener("click", ev => {
+  const btn = ev.target.closest("button");
+  if (!btn) return;
+  state.view = btn.dataset.view;
+  $$("#view-toggle button").forEach(b => b.classList.toggle("active", b === btn));
+  // If we're on events/calendar tab, update accordingly
+  if (state.page !== "events" && state.page !== "calendar") {
+    state.page = state.view === "calendar" ? "calendar" : "events";
+    $$(".nav-tab").forEach(t => t.classList.toggle("active", t.dataset.page === state.page));
+  }
+  render();
+});
+
+// Filters (delegated)
+document.querySelectorAll(".chips").forEach(container => {
+  const group = container.dataset.group;
+  container.addEventListener("click", ev => {
+    const chip = ev.target.closest(".chip");
+    if (!chip) return;
+    const val = chip.dataset.val;
+    if (state[group].has(val)) state[group].delete(val);
+    else state[group].add(val);
+    render();
+  });
+});
+
+// Clear buttons
+$$("[data-clear]").forEach(btn => btn.addEventListener("click", () => {
+  const g = btn.dataset.clear;
+  if (g === "dates") {
+    state.dateFrom = ""; state.dateTo = "";
+    $("#date-from").value = ""; $("#date-to").value = "";
+  } else {
+    state[g] = new Set();
+  }
+  render();
+}));
+
+// Search
+let searchTimer;
+$("#search").addEventListener("input", e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { state.search = e.target.value; render(); }, 150);
+});
+
+// Date range
+$("#date-from").addEventListener("change", e => { state.dateFrom = e.target.value; render(); });
+$("#date-to").addEventListener("change", e => { state.dateTo = e.target.value; render(); });
+
+// Sort
+$("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+
+// Event clicks (delegated — works for both list and calendar views)
+document.addEventListener("click", ev => {
+  const evBtn = ev.target.closest(".event");
+  if (evBtn) { openModal(evBtn.dataset.id); return; }
+  const calEv = ev.target.closest(".cal-event");
+  if (calEv) { openModal(calEv.dataset.id); return; }
+  // Side-panel topic click filters by that topic
+  const topicBar = ev.target.closest("[data-topic]");
+  if (topicBar) {
+    const t = topicBar.dataset.topic;
+    state.topic.has(t) ? state.topic.delete(t) : state.topic.add(t);
+    render();
+  }
+});
+
+// Modal
+$("#modal-close").addEventListener("click", closeModal);
+$("#modal").addEventListener("click", ev => { if (ev.target.id === "modal") closeModal(); });
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") closeModal();
+  // Keyboard: "/" focuses search
+  if (ev.key === "/" && document.activeElement.tagName !== "INPUT") {
+    ev.preventDefault();
+    $("#search").focus();
+  }
+});
+
+// Buttons
+$("#export-btn").addEventListener("click", exportCSV);
+$("#subscribe-btn").addEventListener("click", () => {
+  toast("Weekly digest: sign-up goes here");
+});
+$("#submit-event").addEventListener("click", ev => { ev.preventDefault(); toast("Submit form goes here"); });
+$("#report-issue").addEventListener("click", ev => { ev.preventDefault(); toast("Report form goes here"); });
+$("#view-api").addEventListener("click", ev => { ev.preventDefault(); toast("API docs go here"); });
+
+/* ============================================================
+   DATA LOADING + INIT
+   ============================================================ */
+async function loadData() {
+  try {
+    // Cache-bust by appending the current date so browsers don't serve stale
+    const bust = new Date().toISOString().slice(0,10);
+    const res = await fetch(`events.json?v=${bust}`, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    EVENTS = payload.events || [];
+    // Update refresh indicator with real generated_at time
+    if (payload.generated_at) {
+      const d = new Date(payload.generated_at);
+      const rel = relativeTime(d);
+      $("#refresh-time").textContent = `Live · updated ${rel}`;
+    } else {
+      $("#refresh-time").textContent = `Live · ${EVENTS.length} events`;
+    }
+  } catch (err) {
+    console.error("Failed to load events.json:", err);
+    $("#refresh-time").textContent = "⚠ Data load failed";
+    showLoadError(err.message);
+    return;
+  }
+  render();
+}
+
+function relativeTime(d) {
+  const secs = Math.round((Date.now() - d.getTime()) / 1000);
+  if (secs < 60) return "just now";
+  const mins = Math.round(secs / 60);
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  if (days === 1) return "yesterday";
+  return `${days}d ago`;
+}
+
+function showLoadError(msg) {
+  $("#view-container").innerHTML = `
+    <div class="empty">
+      <strong>Couldn't load event data</strong>
+      ${msg}. The page will auto-retry in 30 seconds.
+    </div>`;
+  setTimeout(loadData, 30000);
+}
+
+loadData();
+</script>
+</body>
+</html>
